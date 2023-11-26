@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_TODO_ITEMS 100
+#define MAX_TODO_ITEMS 10
 #define MAX_DATE_LENGTH 20
 
 // 전역 변수
@@ -9,44 +9,20 @@ char dates[MAX_TODO_ITEMS][MAX_DATE_LENGTH];
 int tasks[MAX_TODO_ITEMS];
 int itemCount = 0;
 
-// 함수 선언
-void addTodo();
-void removeOldestTodo();
-void calculateDueDate();
-void printAllTodo();
+// 오래된 항목 삭제 기능
+void removeOldestTodo() {
+    if (itemCount <= 0) {
+        printf("삭제할 항목이 없습니다.\n");
+        return;
+    }
 
-int main() {
-    int choice;
+    // 가장 오래된 항목 삭제
+    for (int i = 0; i < itemCount - 1; i++) {
+        strcpy_s(dates[i], sizeof(dates[i]), dates[i + 1]);
+        tasks[i] = tasks[i + 1];
+    }
 
-    do {
-        printf("\n=== TODO 관리 프로그램 ===\n");
-        printf("1. 한 일 추가\n");
-        printf("2. 날짜 계산 및 할 일 알림\n");
-        printf("3. 이전까지 한 일 출력\n");
-        printf("4. 종료\n");
-        printf("선택: ");
-        scanf_s("%d", &choice);
-
-        switch (choice) {
-        case 1:
-            addTodo();
-            break;
-        case 2:
-            calculateDueDate();
-            break;
-        case 3:
-            printAllTodo();
-            break;
-        case 4:
-            printf("프로그램을 종료합니다.\n");
-            break;
-        default:
-            printf("올바른 선택이 아닙니다. 다시 선택해주세요.\n");
-        }
-
-    } while (choice != 4);
-
-    return 0;
+    itemCount--;
 }
 
 // 한 일 추가 기능
@@ -57,7 +33,7 @@ void addTodo() {
     }
 
     printf("날짜 입력 (예: 2023-01-01): ");
-    scanf_s("%s", dates[itemCount]);
+    scanf_s("%s", &dates[itemCount], sizeof(dates[itemCount]));
 
     printf("한 일 입력 (1=물 갈아주기, 2=밥 주기, 3=수조 청소): ");
     scanf_s("%d", &tasks[itemCount]);
@@ -66,23 +42,8 @@ void addTodo() {
     printf("TODO가 추가되었습니다.\n");
 }
 
-// 오래된 항목 삭제 기능
-void removeOldestTodo() {
-    if (itemCount <= 0) {
-        printf("삭제할 항목이 없습니다.\n");
-        return;
-    }
 
-    // 가장 오래된 항목 삭제
-    /*for (int i = 0; i < itemCount - 1; i++) {
-        strcpy_s(dates[i], dates[i + 1]);
-        tasks[i] = tasks[i + 1];
-    }*/
-
-    itemCount--;
-}
-
-// 날짜 계산 및 할 일 알림 기능
+// 날짜 계산 및 할 일 알림 기능: 작동은 하지만 미완성 n일 뒤로만 표시되는게 아니고 정확한 날짜를 출력하도록 수정해야함
 void calculateDueDate() {
     if (itemCount <= 0) {
         printf("할 일이 없습니다.\n");
@@ -136,4 +97,40 @@ void printAllTodo() {
             printf("알 수 없는 작업\n");
         }
     }
+}
+
+
+
+int main() {
+    int choice;
+
+    do {
+        printf("\n=== TODO 관리 프로그램 ===\n");
+        printf("1. 한 일 추가\n");
+        printf("2. 날짜 계산 및 할 일 알림\n");
+        printf("3. 이전까지 한 일 출력\n");
+        printf("4. 종료\n");
+        printf("선택: ");
+        scanf_s("%d", &choice);
+
+        switch (choice) {
+        case 1:
+            addTodo();
+            break;
+        case 2:
+            calculateDueDate();
+            break;
+        case 3:
+            printAllTodo();
+            break;
+        case 4:
+            printf("프로그램을 종료합니다.\n");
+            break;
+        default:
+            printf("올바른 선택이 아닙니다. 다시 선택해주세요.\n");
+        }
+
+    } while (choice != 4);
+
+    return 0;
 }
