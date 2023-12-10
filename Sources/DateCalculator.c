@@ -42,9 +42,6 @@ struct Date calculateDate(struct Date currentDate, int n) {
     return currentDate;
 }
 
-int main() {
-    printf("a");
-    return;
-}
+
 
    

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "DateCalculator.h"
 
 #define MAX_TODO_ITEMS 10
 #define MAX_DATE_LENGTH 20
@@ -43,7 +44,7 @@ void addTodo() {
 }
 
 
-// 날짜 계산 및 할 일 알림 기능: 작동은 하지만 미완성 n일 뒤로만 표시되는게 아니고 정확한 날짜를 출력하도록 수정해야함
+// 날짜 계산 및 할 일 알림 기능: 수정 완료
 void calculateDueDate() {
     if (itemCount <= 0) {
         printf("할 일이 없습니다.\n");
@@ -68,7 +69,12 @@ void calculateDueDate() {
             printf("알 수 없는 작업: ");
         }
 
-        printf("%d일 후에 다시 해야 합니다.\n", tasks[i] == 1 ? 7 : (tasks[i] == 2 ? 14 : 30));
+        // 이 부분을 DateCalculator.h의 calculateDate 함수로 대체
+        struct Date currentDate;
+        sscanf_s(dates[i], "%d-%d-%d", &currentDate.year, &currentDate.month, &currentDate.day);
+        struct Date dueDate = calculateDate(currentDate, tasks[i] == 1 ? 7 : (tasks[i] == 2 ? 14 : 30));
+
+        printf("%d년 %d월 %d일에 다시 해야 합니다.\n", dueDate.year, dueDate.month, dueDate.day);
     }
 }
 
