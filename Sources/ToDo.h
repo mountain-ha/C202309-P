@@ -5,10 +5,6 @@
 #define MAX_TODO_ITEMS 10
 #define MAX_DATE_LENGTH 20
 
-// 전역 변수
-char dates[MAX_TODO_ITEMS][MAX_DATE_LENGTH];
-int tasks[MAX_TODO_ITEMS];
-int itemCount = 0;
 
 // 오래된 항목 삭제 기능
 void removeOldestTodo();
